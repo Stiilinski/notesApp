@@ -46,7 +46,7 @@
 function connectDB() {
     // Database connection settings from the provided image
     $host = '207.148.119.27';
-    $port = '3306'; // Port should be 3306 for MySQL
+    $port = '5432'; // Port should be 3306 for MySQL
     $dbname = 'default'; // Replace with your actual database name
     $username = 'mysql'; // Username as shown in the image
     $password = 'fYrR7PcIT8ELErISEqNFeIm9GsvsjCvQ64wzbn7v7Srp7vEQ1nnbqTXQCmIHornA'; // Replace with the actual password
