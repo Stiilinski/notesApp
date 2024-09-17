@@ -9,10 +9,11 @@ include_once "php/insertUser.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iNote!</title>
+    <link rel="stylesheet" href="css/register.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 </head>
 
-<style>
+<!-- <style>
     @import url('https://fonts.googleapis.com/css2?family=Manjari:wght@100;400;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
@@ -341,7 +342,7 @@ include_once "php/insertUser.php";
     color: #5deb91;
     font-size: 80px;
     }
-</style>
+</style> -->
 
 <body>
     <div class="maincontainer">
