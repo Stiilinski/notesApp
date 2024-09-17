@@ -1,5 +1,5 @@
 <?php
-include_once "php/insertUser.php";
+include "php/insertUser.php";
 
 ?>
 <!DOCTYPE html>
