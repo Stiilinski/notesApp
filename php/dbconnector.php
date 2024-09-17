@@ -21,11 +21,10 @@
 // }
 
 
-
 function connectDB() 
 {
     $host = "207.148.119.27"; // MySQL server IP
-    $port = "5432"; // Custom port for MySQL, unusual but according to your configuration
+    $port = "5432"; // Custom port for MySQL
     $dbname = "default"; // Your database name
     $username = "mysql"; // Your MySQL username
     $password = "fYrR7PcIT8ELErISEqNFeIm9GsvsjCvQ64wzbn7v7Srp7vEQ1nnbqTXQCmIHornA"; // Your MySQL password
@@ -36,13 +35,18 @@ function connectDB()
         $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
         $conn = new PDO($dsn, $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $conn;
+
+        // Success message
+        return "Connection successful!";
     } 
     catch (PDOException $e) 
     {
-        // Output the error message
-        echo "Connection failed: " . $e->getMessage();
-        return null; // Ensure that null is returned if connection fails
+        // Return failure message with the error details
+        return "Connection failed: " . $e->getMessage();
     }
 }
+
+// Usage example
+$result = connectDB();
+echo $result;
 ?>
