@@ -1,6 +1,4 @@
 <?php
-include_once "dbconnector.php";
-
 
 $fnameErr = $lnameErr = $dobErr = $ageErr = $genderErr = $unameErr = $emailErr = $passErr = $ppErr = '';
 

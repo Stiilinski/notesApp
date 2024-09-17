@@ -1,5 +1,4 @@
 <?php
-include_once "php/dbconnector.php";
 include_once "php/insertUser.php";
 
 ?>
