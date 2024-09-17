@@ -340,7 +340,7 @@ function insertUser($uname, $fname, $lname, $password, $email, $gender, $age, $d
     try 
     {
         // Use the function to get a PDO connection
-         // $conn = connectDB();
+        $conn = connectDB();
 
         // Set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -385,7 +385,7 @@ function isUsernameTaken($username) {
 
     try {
         // Connect to the database
-        // $conn = connectDB();
+        $conn = connectDB();
 
         // Prepare and execute the query to check if the username exists
         $stmt = $conn->prepare("SELECT COUNT(*) FROM user_tbl WHERE user_uname = :username");

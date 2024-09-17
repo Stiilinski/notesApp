@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'dbconnector.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
@@ -8,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     try 
     {
-        // $conn = connectDB();
+        $conn = connectDB();
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "SELECT * FROM user_tbl WHERE user_uname = :accID";

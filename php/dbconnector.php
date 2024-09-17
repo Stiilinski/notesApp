@@ -43,33 +43,29 @@
 //     return null;
 // }
 
+function connectDB() {
+    // Database connection settings from the provided image
+    $host = '207.148.119.27';
+    $port = '3306'; // Port should be 3306 for MySQL
+    $dbname = 'default'; // Replace with your actual database name
+    $username = 'mysql'; // Username as shown in the image
+    $password = 'fYrR7PcIT8ELErISEqNFeIm9GsvsjCvQ64wzbn7v7Srp7vEQ1nnbqTXQCmIHornA'; // Replace with the actual password
 
-function connectDB() 
-{
-    $host = "207.148.119.27"; // MySQL server IP
-    $port = "5432"; // Custom port for MySQL
-    $dbname = "default"; // Your database name
-    $username = "mysql"; // Your MySQL username
-    $password = "fYrR7PcIT8ELErISEqNFeIm9GsvsjCvQ64wzbn7v7Srp7vEQ1nnbqTXQCmIHornA"; // Your MySQL password
-
-    try 
-    {
-        // DSN string for MySQL
-        $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
+    try {
+        // Set up the PDO connection string for MySQL
+        $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+        
+        // Create a new PDO instance
         $conn = new PDO($dsn, $username, $password);
+
+        // Set error reporting to throw exceptions
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Success message
-        return "Connection successful!";
-    } 
-    catch (PDOException $e) 
-    {
-        // Return failure message with the error details
-        return "Connection failed: " . $e->getMessage();
+        return $conn;
+    } catch (PDOException $e) {
+        // Handle any errors that occur during connection
+        echo "Connection failed: " . $e->getMessage();
+        return null;
     }
 }
-
-// Usage example
-$result = connectDB();
-echo $result;
 ?>
