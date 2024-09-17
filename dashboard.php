@@ -1,212 +1,212 @@
 <?php
-require_once 'php/dbconnector.php';
-require_once 'php/insertNotes.php';
+    require_once 'php/dbconnector.php';
+    require_once 'php/insertNotes.php';
 
-// Function to retrieve and display the profile image based on user ID
-function displayProfileImage($userID, $conn)
-{
-    try {
-        // Retrieve user image from the database
-        $sql = "SELECT user_profilepic FROM user_tbl WHERE user_id = :userID";
+    // Function to retrieve and display the profile image based on user ID
+    function displayProfileImage($userID, $conn)
+    {
+        try {
+            // Retrieve user image from the database
+            $sql = "SELECT user_profilepic FROM user_tbl WHERE user_id = :userID";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':userID', $userID);
+            $stmt->execute();
+            $userImage = $stmt->fetchColumn();
+
+            // Display profile image if it exists
+            if ($userImage) {
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($userImage) . '" alt="PROFILE IMAGE" />';
+            } else {
+                // Display a default image if user image not found
+                echo '<img src="default_profile_image.jpg" alt="DEFAULT PROFILE IMAGE" />';
+            }
+        } catch (PDOException $e) {
+            // Handle database connection error
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    // Check if user is logged in
+    if (isset($_SESSION['username'])) {
+        
+        // Establish database connection
+        $conn = connectDB();
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Retrieve user ID from the session
+        $username = $_SESSION['username'];
+        $sql = "SELECT user_id FROM user_tbl WHERE user_uname = :username";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':userID', $userID);
+        $stmt->bindParam(':username', $username);
         $stmt->execute();
-        $userImage = $stmt->fetchColumn();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Display profile image if it exists
-        if ($userImage) {
-            echo '<img src="data:image/jpeg;base64,' . base64_encode($userImage) . '" alt="PROFILE IMAGE" />';
+        if ($user) {
+            $userID = $user['user_id'];
+
         } else {
-            // Display a default image if user image not found
+            // Display a default image if user not found
             echo '<img src="default_profile_image.jpg" alt="DEFAULT PROFILE IMAGE" />';
         }
-    } catch (PDOException $e) {
-        // Handle database connection error
-        echo "Error: " . $e->getMessage();
-    }
-}
-
-// Check if user is logged in
-if (isset($_SESSION['username'])) {
-    
-    // Establish database connection
-    $conn = connectDB();
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Retrieve user ID from the session
-    $username = $_SESSION['username'];
-    $sql = "SELECT user_id FROM user_tbl WHERE user_uname = :username";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user) {
-        $userID = $user['user_id'];
-
     } else {
-        // Display a default image if user not found
-        echo '<img src="default_profile_image.jpg" alt="DEFAULT PROFILE IMAGE" />';
-    }
-} else {
-    // Redirect user to login page if not logged in
-    header("Location: index.php");
-    exit();
-}
-
-// FOR EDIT/UPDATE
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title1']) && isset($_POST['description1']) && isset($_POST['noteId']))
-{
-    $updatedTitle = $_POST['title1'];
-    $updatedDescription = $_POST['description1'];
-    $noteId = $_POST['noteId'];
-
-    if (updateNote($noteId, $updatedTitle, $updatedDescription)) 
-    {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES UPDATED!";
-                });
-            </script>';
-    } 
-    else 
-    {
-        echo "<script>alert('Failed to update note.');</script>";
-    }
-}
-
-// FOR ADDING/INSERTING
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description'])) {
-    // Check if the user is logged in and retrieve the user ID
-    if (isset($_SESSION['username'])) {
-        $userID = getUserIDFromSession();
-    } else {
-        // Handle case where user is not logged in
-        echo "<script>alert('Error: User is not logged in.');</script>";
-        exit; // Stop further execution
+        // Redirect user to login page if not logged in
+        header("Location: index.php");
+        exit();
     }
 
-    // Retrieve title and description from POST data
-    $noteTitle = $_POST['title'];
-    $noteContent = $_POST['description'];
-
-    // Call insertNote function with user ID, title, and content
-    if (insertNote($userID, $noteTitle, $noteContent)) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                });
-            </script>';
-    } else {
-        echo "<script>alert('Error inserting note.');</script>";
-    }
-}
-
-// FOR ARCHIVING
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['archiveNoteId']))
-{
-    $noteId = $_POST['archiveNoteId'];
-
-    if (archiveNote($noteId)) 
+    // FOR EDIT/UPDATE
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title1']) && isset($_POST['description1']) && isset($_POST['noteId']))
     {
-        echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES ARCHIVED!";
-                });
-            </script>';
-    } 
-    else 
-    {
-        echo "<script>alert('Failed to update note.');</script>";
-    }
-}
+        $updatedTitle = $_POST['title1'];
+        $updatedDescription = $_POST['description1'];
+        $noteId = $_POST['noteId'];
 
-// FOR RESTORE
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resNoteId']))
-{
-    $noteId = $_POST['resNoteId'];
-
-    if (restoreNote($noteId)) 
-    {
-        echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES RESTORED!";
-                });
-            </script>';
-    } 
-    else 
-    {
-        echo "<script>alert('Failed to update note.');</script>";
-    }
-}
-
-// FOR FAVORITE
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['faveNoteId'])) 
-{
-    $noteId = $_POST['faveNoteId'];
-
-    // Check if the note is already marked as favorite
-    $isFavorite = isNoteFavorite($noteId);
-
-    // If the note is already favorite, remove it; otherwise, mark it as favorite
-    if ($isFavorite) 
-    {
-        // Remove favorite status
-        if (removeFavorite($noteId)) 
+        if (updateNote($noteId, $updatedTitle, $updatedDescription)) 
         {
             echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES UNMARKED AS FAVORITE";
-                });
-            </script>';
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES UPDATED!";
+                    });
+                </script>';
         } 
         else 
         {
-            echo "<script>alert('Failed to unmark note as favorite.');</script>";
+            echo "<script>alert('Failed to update note.');</script>";
         }
-    } 
-    else 
+    }
+
+    // FOR ADDING/INSERTING
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description'])) {
+        // Check if the user is logged in and retrieve the user ID
+        if (isset($_SESSION['username'])) {
+            $userID = getUserIDFromSession();
+        } else {
+            // Handle case where user is not logged in
+            echo "<script>alert('Error: User is not logged in.');</script>";
+            exit; // Stop further execution
+        }
+
+        // Retrieve title and description from POST data
+        $noteTitle = $_POST['title'];
+        $noteContent = $_POST['description'];
+
+        // Call insertNote function with user ID, title, and content
+        if (insertNote($userID, $noteTitle, $noteContent)) {
+            echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                    });
+                </script>';
+        } else {
+            echo "<script>alert('Error inserting note.');</script>";
+        }
+    }
+
+    // FOR ARCHIVING
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['archiveNoteId']))
     {
-        // Mark as favorite
-        if (favoriteNote($noteId)) 
+        $noteId = $_POST['archiveNoteId'];
+
+        if (archiveNote($noteId)) 
         {
             echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES MARKED AS FAVORITE";
-                });
-            </script>';
+                        document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES ARCHIVED!";
+                    });
+                </script>';
         } 
         else 
         {
-            echo "<script>alert('Failed to mark note as favorite.');</script>";
+            echo "<script>alert('Failed to update note.');</script>";
         }
     }
-}
 
-// FOR DELETE
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delNoteId']))
-{
-    $noteId = $_POST['delNoteId'];
+    // FOR RESTORE
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resNoteId']))
+    {
+        $noteId = $_POST['resNoteId'];
 
-    if (deleteNote($noteId)) 
-    {
-        echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector(".popUpContainer").style.visibility = "visible";
-                    document.querySelector(".messageCon h2").textContent = "NOTES DELETE!";
-                });
-            </script>';
-    } 
-    else 
-    {
-        echo "<script>alert('Failed to update note.');</script>";
+        if (restoreNote($noteId)) 
+        {
+            echo '<script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES RESTORED!";
+                    });
+                </script>';
+        } 
+        else 
+        {
+            echo "<script>alert('Failed to update note.');</script>";
+        }
     }
-}
+
+    // FOR FAVORITE
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['faveNoteId'])) 
+    {
+        $noteId = $_POST['faveNoteId'];
+
+        // Check if the note is already marked as favorite
+        $isFavorite = isNoteFavorite($noteId);
+
+        // If the note is already favorite, remove it; otherwise, mark it as favorite
+        if ($isFavorite) 
+        {
+            // Remove favorite status
+            if (removeFavorite($noteId)) 
+            {
+                echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES UNMARKED AS FAVORITE";
+                    });
+                </script>';
+            } 
+            else 
+            {
+                echo "<script>alert('Failed to unmark note as favorite.');</script>";
+            }
+        } 
+        else 
+        {
+            // Mark as favorite
+            if (favoriteNote($noteId)) 
+            {
+                echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES MARKED AS FAVORITE";
+                    });
+                </script>';
+            } 
+            else 
+            {
+                echo "<script>alert('Failed to mark note as favorite.');</script>";
+            }
+        }
+    }
+
+    // FOR DELETE
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delNoteId']))
+    {
+        $noteId = $_POST['delNoteId'];
+
+        if (deleteNote($noteId)) 
+        {
+            echo '<script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".popUpContainer").style.visibility = "visible";
+                        document.querySelector(".messageCon h2").textContent = "NOTES DELETE!";
+                    });
+                </script>';
+        } 
+        else 
+        {
+            echo "<script>alert('Failed to update note.');</script>";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -219,6 +219,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delNoteId']))
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
+<style>
+    
+</style>
+
 <body>
     <div class="mainContainer">
 
