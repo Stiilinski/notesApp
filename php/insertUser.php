@@ -320,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     var closeBtn = document.querySelector('.close');
                     if (closeBtn) {
                         closeBtn.addEventListener('click', function() {
-                            window.location.href = 'index.php'; // Redirect to index.php
+                            window.location.href = '../index.php'; // Redirect to index.php
                         });
                     }
                 });
@@ -382,8 +382,6 @@ function insertUser($uname, $fname, $lname, $password, $email, $gender, $age, $d
 
 
 function isUsernameTaken($username) {
-    // Include your database connection
-    include_once "php/dbconnector.php";
 
     try {
         // Connect to the database
