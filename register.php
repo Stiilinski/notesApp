@@ -115,7 +115,7 @@ include "php/insertUser.php";
 
 
      <!-- Popup message -->
-     <div class="popup">
+     <!-- <div class="popup">
         <div class="success">
             <i class='bx bx-check-circle'></i>
             <h2>REGISTERED SUCCESSFULLY</h2>
@@ -127,7 +127,7 @@ include "php/insertUser.php";
 
 
     <script src="js/index.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js"></script> -->
     
 </body>
 </html>

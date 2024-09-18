@@ -304,15 +304,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert user data into the database
         insertUser($_POST['usersname'], $_POST['fname'], $_POST['lname'], hashPassword($_POST['password']), $_POST['uemails'], isset($_POST['gender']) ? $_POST['gender'] : '', $_POST['age'], $_POST['dob'], file_get_contents($_FILES['profilePic']['tmp_name']));
     
-        // JavaScript code for popup and redirection
-        echo "<script>
-                    setTimeout(function() {
-                        window.location.href = '../regSuccess.php';
-                    }, 100);
-                });
-            </script>";
-
-              exit;
+        // Redirect immediately to regSuccess.php
+        header("Location: ../regSuccess.php");
+        exit;
     }
 }
 
