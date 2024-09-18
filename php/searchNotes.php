@@ -1,3 +1,8 @@
+<?php
+include 'dbconnector.php';
+include 'insertNotes.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 </head>
 <body>
+
 <?php
-include 'dbconnector.php';
-include 'insertNotes.php';
-
-
 $pdo = connectDB();
 
 $searchFilter = $_GET['search'] ?? '';
