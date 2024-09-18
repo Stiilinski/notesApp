@@ -48,4 +48,4 @@
    }
    
 ?>
-<script src="/todolist/js/dashboard.js"></script>
+<script src="../js/dashboard.js"></script>

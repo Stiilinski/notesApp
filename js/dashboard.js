@@ -6,7 +6,7 @@ $('#searchInput').off('input').on('input', function() {
     // Send an AJAX request to the server
     $.ajax({
         type: 'GET',
-        url: '/todolist/php/searchNotes.php', // PHP file handling the search functionality
+        url: '../php/searchNotes.php', // PHP file handling the search functionality
         data: { search: searchQuery }, // Pass the search query as data
         success: function(response) {
             // Update the noteContentList container with the filtered notes
@@ -41,7 +41,7 @@ function handleAllButtonClick() {
         // Send an AJAX request to the server
         $.ajax({
             type: 'GET',
-            url: '/todolist/php/searchNotes.php', // PHP file handling the search functionality
+            url: '../php/searchNotes.php', // PHP file handling the search functionality
             data: { search: searchQuery }, // Pass the search query as data
             success: function(response) {
                 // Update the noteContentList container with the filtered notes
@@ -84,7 +84,7 @@ function handleFavoritesButtonClick() {
         // Send an AJAX request to the server
         $.ajax({
             type: 'GET',
-            url: '/todolist/php/filterFavorite.php', // PHP file handling the search functionality
+            url: '../php/filterFavorite.php', // PHP file handling the search functionality
             data: { search: searchQuery }, // Pass the search query as data
             success: function(response) {
                 // Update the noteContentList container with the filtered notes
@@ -107,7 +107,7 @@ function handleFavoritesButtonClick() {
 
     // Make an AJAX request to fetch favorites
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/todolist/php/filterFavorite.php", true);
+    xhr.open("GET", "../php/filterFavorite.php", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -156,7 +156,7 @@ function handleArchiveButtonClick() {
         // Send an AJAX request to the server
         $.ajax({
             type: 'GET',
-            url: '/todolist/php/filterArchive.php', // PHP file handling the search functionality
+            url: '../php/filterArchive.php', // PHP file handling the search functionality
             data: { search: searchQuery }, // Pass the search query as data
             success: function(response) {
                 // Update the noteContentList container with the filtered notes
@@ -179,7 +179,7 @@ function handleArchiveButtonClick() {
 
     // Make an AJAX request to fetch favorites
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/todolist/php/filterArchive.php", true);
+    xhr.open("GET", "../php/filterArchive.php", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -257,7 +257,7 @@ function displayAddForm()
 
 function conFirmLogout()
 {
-    window.location.href = "../todolist/logout.php";
+    window.location.href = "../logout.php";
 }
 
 function displayDeleteForm() {
@@ -342,12 +342,12 @@ function cancelForm()
 
 function closePopup() 
 {
-    window.location.href = '/todolist/thankYouPage.php';
+    window.location.href = '../thankYouPage.php';
 }
 
 function closePopup1() 
 {
-    window.location.href = '/todolist/thankYouPage1.php';
+    window.location.href = '../thankYouPage1.php';
 }
 
 // Define an object to store original values
