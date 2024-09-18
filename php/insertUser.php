@@ -301,11 +301,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      } 
 
     if (empty($fnameErr) && empty($lnameErr) && empty($dobErr) && empty($ageErr) && empty($genderErr) && empty($unameErr) && empty($emailErr) && empty($passErr) && empty($ppErr)) {
-        // Insert user data into the database
+
         insertUser($_POST['usersname'], $_POST['fname'], $_POST['lname'], hashPassword($_POST['password']), $_POST['uemails'], isset($_POST['gender']) ? $_POST['gender'] : '', $_POST['age'], $_POST['dob'], file_get_contents($_FILES['profilePic']['tmp_name']));
     
-        // Redirect immediately to regSuccess.php
-        header("Location: ../regSuccess.php");
+        echo "<script>
+                window.location.href = '../regSuccess.php';
+            </script>";
         exit;
     }
 }
