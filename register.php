@@ -126,8 +126,8 @@ include "php/insertUser.php";
     <canvas id="my-canvas"></canvas>
 
 
-    <script src="js/index.min.js"></script>
-    <script src="js/script.js"></script> -->
+    <script src="js/index.min.js"></script>-->
+    <script src="js/script.js"></script> 
     
 </body>
 </html>
