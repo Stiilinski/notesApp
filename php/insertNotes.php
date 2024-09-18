@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'dbconnector.php';
 
 function getUserIDFromSession() {
