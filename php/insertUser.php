@@ -306,39 +306,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // JavaScript code for popup and redirection
         echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var popup = document.querySelector('.popup');
-                    if (popup) {
-                        popup.classList.add('active'); // Show popup
-                    }
-                    var confetti = document.querySelector('#my-canvas');
-                    if (confetti) {
-                        confetti.classList.add('active'); // Show confetti
-                    }
-
-                    // Add event listener to the close button
-                    var closeBtn = document.querySelector('.close');
-                    if (closeBtn) {
-                        closeBtn.addEventListener('click', function() {
-                            window.location.href = '../index.php'; // Redirect to index.php after close
-                        });
-                    }
-
-                    // Optional: Automatically redirect after a few seconds
                     setTimeout(function() {
-                        window.location.href = '../index.php'; // Redirect after 5 seconds
-                    }, 5000);
+                        window.location.href = '../regSuccess.php';
+                    }, 100);
                 });
             </script>";
-
-            echo '<div class="popup">
-                    <div class="success">
-                        <i class="bx bx-check-circle"></i>
-                        <h2>REGISTERED SUCCESSFULLY</h2>
-                    </div>
-                    <b class="close">X</b>
-                  </div>
-                  <canvas id="my-canvas"></canvas>';
 
               exit;
     }
