@@ -309,22 +309,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 document.addEventListener('DOMContentLoaded', function() {
                     var popup = document.querySelector('.popup');
                     if (popup) {
-                        popup.classList.add('active');
+                        popup.classList.add('active'); // Show popup
                     }
                     var confetti = document.querySelector('#my-canvas');
                     if (confetti) {
-                        confetti.classList.add('active');
+                        confetti.classList.add('active'); // Show confetti
                     }
-    
+
                     // Add event listener to the close button
                     var closeBtn = document.querySelector('.close');
                     if (closeBtn) {
                         closeBtn.addEventListener('click', function() {
-                            window.location.href = '../index.php'; // Redirect to index.php
+                            window.location.href = '../index.php'; // Redirect to index.php after close
                         });
                     }
+
+                    // Optional: Automatically redirect after a few seconds
+                    setTimeout(function() {
+                        window.location.href = '../index.php'; // Redirect after 5 seconds
+                    }, 5000);
                 });
-              </script>";
+            </script>";
               exit;
     }
 }
