@@ -339,6 +339,7 @@ function insertUser($uname, $fname, $lname, $password, $email, $gender, $age, $d
 {
     try 
     {
+        include 'dbconnector.php';
         // Use the function to get a PDO connection
         $conn = connectDB();
 
@@ -384,6 +385,7 @@ function insertUser($uname, $fname, $lname, $password, $email, $gender, $age, $d
 function isUsernameTaken($username) {
 
     try {
+        include 'dbconnector.php';
         // Connect to the database
         $conn = connectDB();
 
