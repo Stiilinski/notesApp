@@ -1,5 +1,6 @@
 <?php
 include 'insertNotes.php';
+include 'dbconnector.php';
 ?>
 
 <!DOCTYPE html>
