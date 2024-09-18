@@ -1,5 +1,4 @@
 <?php
-include 'dbconnector.php';
 include 'insertNotes.php';
 ?>
 
