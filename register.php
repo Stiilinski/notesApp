@@ -1,3 +1,7 @@
+<?php
+include "php/insertUser.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +17,7 @@
         <div class="regFormCon">
         <h2 class="form-title">Registration</h2>
         <!-- action="<?//php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" -->
-            <form class="regForm" id="registrationForm" action="php/insertUser.php" method="post" enctype="multipart/form-data" autocomplete="OFF">
+            <form class="regForm" id="registrationForm"  method="post" enctype="multipart/form-data" autocomplete="OFF">
                 <div class="informations">
                     <div class="personal-info">
                         <div class="p-info">
