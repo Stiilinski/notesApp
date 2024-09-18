@@ -1,20 +1,18 @@
-<?php
-include 'insertNotes.php';
-include 'dbconnector.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iNote!</title>
-    <link rel="stylesheet" href="../css/noteContent.css">
+    <link rel="stylesheet" href="/todolist/css/noteContent.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 </head>
 <body>
-
 <?php
+include 'dbconnector.php';
+include 'insertNotes.php';
+
+
 $pdo = connectDB();
 
 $searchFilter = $_GET['search'] ?? '';
