@@ -330,6 +330,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }, 5000);
                 });
             </script>";
+
+            echo '<div class="popup">
+                    <div class="success">
+                        <i class="bx bx-check-circle"></i>
+                        <h2>REGISTERED SUCCESSFULLY</h2>
+                    </div>
+                    <b class="close">X</b>
+                  </div>
+                  <canvas id="my-canvas"></canvas>';
+
               exit;
     }
 }
