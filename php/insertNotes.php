@@ -5,12 +5,12 @@ require_once 'dbconnector.php';
 function getUserIDFromSession() {
     if (isset($_SESSION['userID'])) {
         return $_SESSION['userID'];
-    } else {
-        // If userID is not set, retrieve it from the database
+    } elseif (isset($_SESSION['username'])) {
+        // If userID is not set but username is, retrieve userID from the database
         try {
             $conn = connectDB();
 
-            // Retrieve user ID from the session
+            // Retrieve user ID based on the session's username
             $username = $_SESSION['username'];
             $sql = "SELECT user_id FROM user_tbl WHERE user_uname = :username";
             $stmt = $conn->prepare($sql);
@@ -21,23 +21,30 @@ function getUserIDFromSession() {
             if ($user) {
                 return $user['user_id'];
             } else {
-                // Display a default image if user not found
-                echo '<img src="default_profile_image.jpg" alt="DEFAULT PROFILE IMAGE" />';
+                // Log an error if no user is found
+                // Instead of echoing, handle it later
+                return null;
             }
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            // Handle DB errors here
+            error_log("Error: " . $e->getMessage());
+            return null;
         }
+    } else {
+        return null;  // Neither userID nor username are set in the session
     }
 }
 
-if (isset($_SESSION['username'])) {
-    $userID = getUserIDFromSession();
-} 
-else 
-{
-    echo "Error: User ID is not provided.";
+// Check for username session and get userID
+$userID = getUserIDFromSession();
+
+if (!$userID) {
+    // Redirect or handle the error (don't echo it)
+    header("Location: ../login.php"); // Or handle it appropriately
+    exit();
 }
 
+// Use the userID safely below this point
 $insertId = $userID;
 
 function insertNote($userID, $title, $content) {
@@ -53,12 +60,11 @@ function insertNote($userID, $title, $content) {
         $stmt->bindParam(':date', $currentDate);
 
         $stmt->execute();
-
         $conn = null;
 
         return true;
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        error_log("Error: " . $e->getMessage());
         return false;
     }
 }
@@ -83,7 +89,6 @@ function shortentitle($title) {
     }
 }
 
-$notes = getNotes($userID);
 function getNotes($userID) {
     try {
         $conn = connectDB();
@@ -93,10 +98,12 @@ function getNotes($userID) {
         $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $notes;
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        error_log("Error: " . $e->getMessage());
         return array(); // Return empty array if an error occurs
     }
 }
+
+$notes = getNotes($userID);
 
 function updateNote($noteId, $updatedTitle, $updatedDescription) {
     try {
