@@ -1,7 +1,5 @@
 <?php
 
-session_start(); // Start session
-
 include 'dbconnector.php';
 include 'insertNotes.php'; // Include before any output
 
